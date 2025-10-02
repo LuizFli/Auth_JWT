@@ -37,25 +37,40 @@ model token {
 
 // produto table
 model produto {
-  id        Int      @id @default(autoincrement())
-  nome      String
-  descricao String?
-  preco     Decimal  @db.Decimal(10, 2)
-  status    String   @default("Disponivel")
-  estoque   Int
-  userId    Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user      user     @relation(fields: [userId], references: [id])
+  id              Int               @id @default(autoincrement())
+  nome            String
+  descricao       String?
+  preco           Decimal           @db.Decimal(10, 2)
+  status          String            @default("Disponivel")
+  estoque         Int
+  userId          Int
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  user            user              @relation(fields: [userId], references: [id])
+  pedidosProdutos pedidosProdutos[]
 }
 
 // pedidos 
 model pedidos {
-  id        Int      @id @default(autoincrement())
-  valor     Decimal  @db.Decimal(10, 2)
-  status    String
-  userId    Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user      user     @relation(fields: [userId], references: [id])
+  id              Int               @id @default(autoincrement())
+  valor           Decimal           @db.Decimal(10, 2)
+  status          String
+  userId          Int
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  user            user              @relation(fields: [userId], references: [id])
+  pedidosProdutos pedidosProdutos[]
+}
+
+// tabela de relação entre pedidos e produtos
+model pedidosProdutos {
+  id        Int     @id @default(autoincrement())
+  pedidoId  Int
+  produtoId Int
+  quantidade Int    @default(1)
+  precoUnitario Decimal @db.Decimal(10, 2)
+  pedido    pedidos @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+  produto   produto @relation(fields: [produtoId], references: [id], onDelete: Cascade)
+  
+  @@unique([pedidoId, produtoId])
 }

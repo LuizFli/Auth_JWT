@@ -22,12 +22,27 @@ export const createProduto = async (req: Request, res: Response): Promise<Respon
     const { nome, descricao, preco, estoque, status } = req.body;
     const userId = getUserIdFromToken(req);
 
+    // Debug: log dos dados recebidos
+    console.log("Dados recebidos:", req.body);
+    console.log("nome:", nome, "type:", typeof nome);
+    console.log("preco:", preco, "type:", typeof preco);
+    console.log("estoque:", estoque, "type:", typeof estoque);
+
     if (!userId) {
       return res.status(401).json({ error: "Token inválido ou expirado" });
     }
 
-    if (!nome || !preco || estoque === undefined) {
-      return res.status(400).json({ error: "Nome, preço e estoque são obrigatórios" });
+    // Validação mais específica dos campos obrigatórios
+    if (!nome || nome.trim() === '') {
+      return res.status(400).json({ error: "Nome é obrigatório" });
+    }
+
+    if (preco === undefined || preco === null || preco === '' || isNaN(Number(preco))) {
+      return res.status(400).json({ error: "Preço é obrigatório e deve ser um número válido" });
+    }
+
+    if (estoque === undefined || estoque === null || estoque === '' || isNaN(Number(estoque))) {
+      return res.status(400).json({ error: "Estoque é obrigatório e deve ser um número válido" });
     }
 
     const produto = await prismaClient.produto.create({

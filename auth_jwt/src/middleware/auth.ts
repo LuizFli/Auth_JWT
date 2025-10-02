@@ -16,10 +16,3 @@ export function auth(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-// export function requireRole(...roles: Array<"USER" | "ADMIN">) {
-//   return (req: RequestExtend, res: Response, next: NextFunction) => {
-//     if (!req.user) return res.status(401).json({ error: "unauthenticated" });
-//     // if (!roles.includes(req.user.role)) return res.status(403).json({ error: "forbidden" });
-//     next();
-//   };
-// }

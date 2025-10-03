@@ -1,6 +1,8 @@
 import type { Request, Response, NextFunction } from "express";
 import { verifyAccess } from "../utils/jwt.ts";
 
+
+
 export function auth(req: Request, res: Response, next: NextFunction) {
   const hdr = req.headers.authorization;
   if (!hdr?.startsWith("Bearer "))

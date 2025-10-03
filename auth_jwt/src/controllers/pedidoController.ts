@@ -140,7 +140,7 @@ export const createPedido = async (req: Request, res: Response): Promise<Respons
     }
 
     // Criar o pedido e as relações com produtos em uma transação
-    const novoPedido = await prismaClient.$transaction(async (prisma: PrismaClient) => {
+    const novoPedido = await prismaClient.$transaction(async (prisma) => {
       // Criar o pedido
       const pedido = await prisma.pedidos.create({
         data: {
@@ -305,8 +305,9 @@ export const deletePedido = async (req: Request, res: Response): Promise<Respons
 };
 
 // Método especial para a API do professor atualizar status para concluído
-export const concludePedido = async (req: Request, res: Response): Promise<Response> => {
+export const updatePedidoStatus = async (req: Request, res: Response): Promise<Response> => {
   try {
+    const {query} = req;
     const { id } = req.params;
 
     if (!id || isNaN(Number(id))) {
@@ -326,7 +327,7 @@ export const concludePedido = async (req: Request, res: Response): Promise<Respo
     const pedidoConcluido = await prismaClient.pedidos.update({
       where: { id: Number(id) },
       data: { 
-        status: "Concluido",
+        status: String(query.status) || "pendente",
         updatedAt: new Date()
       },
       include: {

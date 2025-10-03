@@ -64,6 +64,12 @@ cd Auth_JWT/auth_jwt
 ```bash
 # Instalar todas as dependências
 npm install
+
+# Instalar axios para requisições HTTP
+npm install axios
+
+# Instalar tipos do axios para TypeScript
+npm install --save-dev @types/axios
 ```
 
 ### 3. Configurar Variáveis de Ambiente
@@ -178,6 +184,10 @@ npx tsx --watch src/app.ts
 ```bash
 # Instalar dependências
 npm install
+
+# Instalar axios (para requisições HTTP)
+npm install axios
+npm install --save-dev @types/axios
 
 # Rodar em desenvolvimento (com hot reload)
 npm run dev

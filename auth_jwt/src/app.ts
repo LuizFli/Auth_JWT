@@ -4,7 +4,7 @@ import { auth } from './middleware/auth.ts';
 import userRouter from './routes/userRoutes.ts';
 import produtoRouter from './routes/produtoRoutes.ts';
 import pedidoRouter from './routes/pedidoRotes.ts';
-import { concludePedido } from './controllers/pedidoController.ts';
+import publicPedidosRouter from './routes/publicPedidosRouter.ts';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,7 +18,7 @@ app.get('/health', (req, res) => {
 app.use(authRouter);
 
 // Rota especial para a API do professor - sem autenticação
-app.patch("/pedidos/:id/concluir", concludePedido);
+app.use(publicPedidosRouter);
 
 app.use(auth);
 // privados
